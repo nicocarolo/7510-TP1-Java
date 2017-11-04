@@ -24,4 +24,11 @@ public class KnowledgeBaseTest {
 
 	}
 
+	@Test
+	public void testBaseShouldLoadDatabase() {
+		this.knowledgeBase.parseDB("rules.db");
+		Assert.assertTrue(this.knowledgeBase.answer("varon (javier)."));
+
+	}
+
 }

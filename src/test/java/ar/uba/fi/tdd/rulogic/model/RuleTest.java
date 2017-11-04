@@ -6,9 +6,10 @@ import org.junit.Test;
 import java.util.Arrays;
 
 public class RuleTest {
+
     @Test
     public void testRuleShouldBeCreatedWithNameParamAndFact() {
-        String[] factParams = {"javier"};
+        String[] factParams = {"X"};
         Fact fact = new Fact("varon", factParams);
 
         String[] ruleParams = {"X"};
@@ -26,4 +27,17 @@ public class RuleTest {
         Assert.assertTrue(factsInRule.equals(fact.toString()));
     }
 
+    @Test
+    public void testRuleShouldBeGetAsString() {
+        String[] ruleParams = {"X"};
+
+        String[] factParams = {"X"};
+        Fact fact = new Fact("varon", factParams);
+        String[] otherFactParams = {"Y", "X"};
+        Fact otherFact = new Fact("padre", otherFactParams);
+        Fact[] ruleFact = {fact, otherFact};
+
+        Rule rule = new Rule("hijo", ruleParams, ruleFact);
+        assert(rule.toString().equals("hijo(X) :- varon(X).\npadre(Y, X)."));
+    }
 }
