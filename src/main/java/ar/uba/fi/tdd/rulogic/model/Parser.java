@@ -18,24 +18,23 @@ public class Parser {
         //Split entry:  in first position of the result will have fact name
         //              in second position of the result will have the params
         String[] splittedEntry = entryFact.split("[().]");
-        return new Fact(splittedEntry[0], splittedEntry[1].split("/, /"));
+        return new Fact(splittedEntry[0], splittedEntry[1].split(", "));
     }
 
     public Rule parseRule(String entryRule) {
         //Split entry:  in first position of the result will have fact name
         //              in second position of the result will have the params
-//        String[] splittedEntry = entryRule.split("[().]||( :- )");
-        String[] splittedEntry = entryRule.split("\\(|, \\)|\\.\\:-");
+        String[] splittedEntry = entryRule.split("\\(|\\), |\\) :- |\\).|\\)");
         List<Fact> factsOfRule = new ArrayList<>();
         for (int i = 2; i < splittedEntry.length -1; i = i + 2) {
             if (!splittedEntry[i].equals("")) {
-                factsOfRule.add(new Fact(splittedEntry[i], splittedEntry[i+1].split("/, /")));
+                factsOfRule.add(new Fact(splittedEntry[i], splittedEntry[i+1].split(", ")));
             }
         }
-        return new Rule(splittedEntry[0], splittedEntry[1].split("/, /"), factsOfRule);
+        return new Rule(splittedEntry[0], splittedEntry[1].split(", "), factsOfRule);
     }
 
     public boolean validQuery (String query) {
-        return query.matches("/^[a-z]+\\(([a-z]+, )*[a-z]+\\)");
+        return query.matches("^[a-z]+\\(([a-z]+, )*[a-z]+\\)\\.");
     }
 }

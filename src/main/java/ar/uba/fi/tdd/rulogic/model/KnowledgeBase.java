@@ -5,17 +5,29 @@ import java.net.URISyntaxException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.List;
+import java.util.Optional;
+import java.util.function.Predicate;
 import java.util.function.Supplier;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 public class KnowledgeBase {
+
 	private List<Fact> dbFacts;
 	private List<Rule> dbRules;
 	private Parser parser;
 
 	public KnowledgeBase(){
 		this.parser = new Parser();
+	}
+
+
+	public List<Fact> getDbFacts() {
+		return dbFacts;
+	}
+
+	public List<Rule> getDbRules() {
+		return dbRules;
 	}
 
 	public void parseDB(String filename) {
@@ -41,13 +53,41 @@ public class KnowledgeBase {
 				.filter(line -> this.parser.validFact(line))
 				.map(line -> this.parser.parseFact(line))
 				.collect(Collectors.toList());
-		System.out.println("hola");
 
 	}
 
 	public boolean answer(String query) {
+		if (this.parser.validQuery(query)) {
+            Fact parsedQuery = this.parser.parseFact(query);
+			if (this.isFact(parsedQuery)){
+				return true;
+			}
+			else {
+				if (this.isRule(parsedQuery)) {
+                    List<Fact> factsToTest = this.matchRule(parsedQuery);
+					return factsToTest.stream().allMatch(fact -> this.isFact(fact));
+				}
+			}
+		}
+		return false;
+	}
 
-		return true;
+	public boolean isFact(Fact query){
+		Boolean isFact = this.dbFacts.stream().anyMatch(fact -> fact.isEqualTo(query));
+		return isFact;
+	}
+
+	public boolean isRule(Fact query){
+		Boolean isRule = this.dbRules.stream().anyMatch(rule -> rule.getName().equals(query.getName()));
+		return isRule;
+	}
+
+	public List<Fact> matchRule(Fact query) {
+		Optional<Rule> rule = this.dbRules.stream().filter(rules -> rules.getName().equals(query.getName())).findFirst();
+		if (rule.isPresent()) {
+			return rule.get().factsToTestReplacedParams(query.getValues());
+		}
+		return null;
 	}
 
 }

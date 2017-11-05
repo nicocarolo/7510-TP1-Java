@@ -32,7 +32,7 @@ public class Fact {
 
     public boolean isEqualTo(Fact factToCompare) {
         if (this.name.equals(factToCompare.getName())
-                && this.values.toString().equals(factToCompare.values.toString())) return true;
+                && String.join(",", this.values).equals(String.join(",", factToCompare.getValues()))) return true;
         return false;
     }
 }
