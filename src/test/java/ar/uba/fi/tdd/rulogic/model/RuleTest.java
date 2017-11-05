@@ -3,7 +3,9 @@ package ar.uba.fi.tdd.rulogic.model;
 import org.junit.Assert;
 import org.junit.Test;
 
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 public class RuleTest {
 
@@ -13,15 +15,16 @@ public class RuleTest {
         Fact fact = new Fact("varon", factParams);
 
         String[] ruleParams = {"X"};
-        Fact[] ruleFact = {fact};
+        List<Fact> ruleFact = new ArrayList<>();
+        ruleFact.add(fact);
         Rule rule = new Rule("hijo", ruleParams, ruleFact);
 
         Assert.assertTrue(rule.getName().equals("hijo"));
         Assert.assertTrue(Arrays.equals(rule.getParams(), ruleParams));
 
         String factsInRule = "";
-        for (int i = 0; i < rule.getFactsToTest().length; i++){
-            factsInRule += rule.getFactsToTest()[i].toString();
+        for (int i = 0; i < rule.getFactsToTest().size(); i++){
+            factsInRule += rule.getFactsToTest().get(i).toString();
         }
 
         Assert.assertTrue(factsInRule.equals(fact.toString()));
@@ -35,7 +38,9 @@ public class RuleTest {
         Fact fact = new Fact("varon", factParams);
         String[] otherFactParams = {"Y", "X"};
         Fact otherFact = new Fact("padre", otherFactParams);
-        Fact[] ruleFact = {fact, otherFact};
+        List<Fact> ruleFact = new ArrayList<>();
+        ruleFact.add(fact);
+        ruleFact.add(otherFact);
 
         Rule rule = new Rule("hijo", ruleParams, ruleFact);
         assert(rule.toString().equals("hijo(X) :- varon(X).\npadre(Y, X)."));

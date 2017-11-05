@@ -1,14 +1,15 @@
 package ar.uba.fi.tdd.rulogic.model;
 
 import java.util.Arrays;
+import java.util.List;
 
 public class Rule {
 
     private String name;
     private String[] params;
-    private Fact[] factsToTest;
+    private List<Fact> factsToTest;
 
-    public Rule(String description, String[] params, Fact[] factsToTest) {
+    public Rule(String description, String[] params, List<Fact> factsToTest) {
         this.name = description;
         this.params = params;
         this.factsToTest = factsToTest;
@@ -22,7 +23,7 @@ public class Rule {
         return params;
     }
 
-    public Fact[] getFactsToTest() {
+    public List<Fact> getFactsToTest() {
         return factsToTest;
     }
 
@@ -34,8 +35,8 @@ public class Rule {
         }
         ruleString = ruleString.substring(0, ruleString.length() - 2);
         ruleString += ") :- ";
-        for (int j = 0; j < this.factsToTest.length; j++) {  //loop params
-            ruleString += this.factsToTest[j].toString() + "\n";
+        for (int j = 0; j < this.factsToTest.size(); j++) {  //loop params
+            ruleString += this.factsToTest.get(j).toString() + "\n";
         }
         ruleString = ruleString.substring(0, ruleString.length() - 1);
         return ruleString;
