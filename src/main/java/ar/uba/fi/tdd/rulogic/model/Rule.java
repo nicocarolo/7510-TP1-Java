@@ -30,7 +30,7 @@ public class Rule {
     }
 
     public List<Fact> factsToTestReplacedParams(String[] params) {
-        
+
         List<Fact> factsOfRule = new ArrayList<>();
         for (int i = 0; i < this.factsToTest.size(); i++) { //loop facts to test
             Fact fact = new Fact(this.factsToTest.get(i).getName(), this.factsToTest.get(i).getValues().clone());
