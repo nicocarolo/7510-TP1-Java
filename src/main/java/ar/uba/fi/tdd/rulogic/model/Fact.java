@@ -1,6 +1,9 @@
 package ar.uba.fi.tdd.rulogic.model;
 
 import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
+import java.util.stream.Collectors;
 
 public class Fact {
     private String name;
@@ -34,5 +37,13 @@ public class Fact {
         if (this.name.equals(factToCompare.getName())
                 && String.join(",", this.values).equals(String.join(",", factToCompare.getValues()))) return true;
         return false;
+    }
+
+    public Fact replaceValues(HashMap<String,String> replacements) {
+        List<String> newValues = Arrays.asList(this.values).stream()
+                .map(value -> replacements.get(value))
+                .collect(Collectors.toList());
+
+        return new Fact(this.name, newValues.toArray(new String[newValues.size()]));
     }
 }
